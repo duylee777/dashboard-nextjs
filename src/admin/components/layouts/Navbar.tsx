@@ -25,7 +25,7 @@ export function Navbar ({ isOpen, onToggleSidebar }: NavbarProps) {
                             onToggle={onToggleSidebar} 
                         />
                         <Link href="#" className="flex gap-2 ml-2 md:mr-24">
-                            <Image src="/assets/imgs/logo-phenikaa-uni-mini.png" alt="logo-phenikaa-uni-mini" width={30} height={30}/>
+                            <Image src="/assets/imgs/logo-phenikaa-uni-mini.png" alt="logo-phenikaa-uni-mini" width={30} height={30} className='w-7.5 h-7.5 object-cover'/>
                             <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">ITC</span>
                         </Link>
                     </div>

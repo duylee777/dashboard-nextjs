@@ -13,12 +13,12 @@ export default function AdminLayout ({ children }: { children: React.ReactNode }
     return (
         <>
             <Navbar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
-            <div className="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+            <div className="flex pt-16 overflow-hidden  dark:bg-gray-900">
                 <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
                 <div className="fixed inset-0 z-10 hidden bg-gray-900/50 dark:bg-gray-900/90" id="sidebarBackdrop"></div>
-                <div id="main-content" className="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
+                <div id="main-content" className="relative w-full h-full overflow-y-auto  lg:ml-64 dark:bg-gray-900">
                     <main>
-                        <div className="px-4 py-6">{children}</div>
+                        <div className="py-6">{children}</div>
                     </main>
                 </div>
             </div>
