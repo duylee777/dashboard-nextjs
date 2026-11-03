@@ -1,19 +1,110 @@
 'use client';
 
-import { Button } from "flowbite-react";
+import { useState, useTransition } from "react";
+import { Spinner, Label, TextInput, Textarea, Button, Select, Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react";
 import { SquarePen } from "lucide-react";
+import { AccountData } from "@/src/admin/types/account";
 
-export default function EditAccount () {
+interface EditAccountProps {
+    account: AccountData | null;
+    onSave: (updateAccount: AccountData) => Promise<void>;
+}
+
+const DEFAULT_FORM: AccountData = {
+    id: '',
+    avatar: '',
+    name: '',
+    email: '',
+    position: '',
+    country: '',
+    status: 'active',
+    biography: '',
+};
+
+export default function EditAccount ({ account, onSave }: EditAccountProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [formData, setFormData] = useState<AccountData>(DEFAULT_FORM);
+    const [isPending, startTransition] = useTransition();
+
+    // Khi bấm nút Edit: Đặt lại dữ liệu mới nhất từ props và mở Modal
+    const handleOpen = () => {
+        setFormData(account ?? DEFAULT_FORM);
+        setIsOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
+    // Lắng nghe sự thay đổi của các ô input
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // Xử lý nộp form
+    // Hàm handleAction nhận tham số kiểu FormData nếu cần, hoặc tự đọc từ state nội bộ
+    const handleAction = () => {
+        startTransition(async () => {
+            await onSave(formData);
+            setIsOpen(false)
+        });
+    };
+
     return (
         <>
-            {/* <button type="button" data-modal-target="edit-user-modal" data-modal-toggle="edit-user-modal" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                <SquarePen className="w-4 h-4 mr-2" />
-                Edit user
-            </button> */}
-            <Button size="sm" color="yellow">
+            <Button size="sm" color="yellow" onClick={handleOpen}>
                 <SquarePen className="w-4 h-4 mr-2" />
                 Edit
             </Button>
+
+            {/* Edit User Modal */}
+            <Modal dismissible show={isOpen} onClose={handleClose} >
+                <ModalHeader>Add new user</ModalHeader>
+                <form onSubmit={handleAction}>
+                    <ModalBody>
+                        <div className="grid grid-cols-6 gap-6">
+                            <div className="col-span-6 sm:col-span-3">
+                                <Label htmlFor="name">Name</Label>
+                                <TextInput type="text" value={formData.name} onChange={handleChange} placeholder="Input first name ..." required shadow />
+                            </div>
+                            <div className="col-span-6 sm:col-span-3">
+                                <Label htmlFor="email">Email</Label>
+                                <TextInput type="text" placeholder="Input email ..." required shadow />
+                            </div>
+                            <div className="col-span-6 sm:col-span-3">
+                                <Label htmlFor="position">Position</Label>
+                                <TextInput type="text" placeholder="Input position ..." required shadow />
+                            </div>
+                            <div className="col-span-6 sm:col-span-3">
+                                <Label htmlFor="status">Status</Label>
+                                <Select required>
+                                    <option>Active</option>
+                                    <option>Offline</option>
+                                </Select>
+                            </div>
+                            <div className="col-span-6">
+                                <Label htmlFor="typography">Typography</Label>
+                                <Textarea placeholder="Input typography ..." required shadow rows={4} />
+                            </div>
+                        </div>
+                    </ModalBody>
+                </form>
+                <ModalFooter>
+                    <Button type="submit">
+                        {isPending ? (
+                            <div className="flex items-center gap-2">
+                                <Spinner size="sm" light />
+                                <span>Saving...</span>
+                            </div>
+                        ) : (
+                            'Save changes'
+                        )}
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </>
     );
 }
