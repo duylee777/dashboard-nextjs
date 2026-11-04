@@ -3,14 +3,14 @@
 import { useState, useTransition } from "react";
 import { Spinner, Label, TextInput, Textarea, Button, Select, Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react";
 import { SquarePen } from "lucide-react";
-import { AccountData } from "@/src/admin/types/account";
+import { AccountType } from "@/src/admin/types/account";
 
 interface EditAccountProps {
-    account: AccountData | null;
-    onSave: (updateAccount: AccountData) => Promise<void>;
+    account: AccountType | null;
+    onSave: (updateAccount: AccountType) => Promise<void>;
 }
 
-const DEFAULT_FORM: AccountData = {
+const DEFAULT_FORM: AccountType = {
     id: '',
     avatar: '',
     name: '',
@@ -23,7 +23,7 @@ const DEFAULT_FORM: AccountData = {
 
 export default function EditAccount ({ account, onSave }: EditAccountProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const [formData, setFormData] = useState<AccountData>(DEFAULT_FORM);
+    const [formData, setFormData] = useState<AccountType>(DEFAULT_FORM);
     const [isPending, startTransition] = useTransition();
 
     // Khi bấm nút Edit: Đặt lại dữ liệu mới nhất từ props và mở Modal
@@ -55,7 +55,7 @@ export default function EditAccount ({ account, onSave }: EditAccountProps) {
 
     return (
         <>
-            <Button size="sm" color="yellow" onClick={handleOpen}>
+            <Button size="sm" color="yellow" outline onClick={handleOpen}>
                 <SquarePen className="w-4 h-4 mr-2" />
                 Edit
             </Button>

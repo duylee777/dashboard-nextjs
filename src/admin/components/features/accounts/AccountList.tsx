@@ -6,9 +6,9 @@ import AdminPaginate from "./AdminPaginate";
 import FilterAccount from "./FilterAccount";
 import CreateAccount from "./CreateAccount";
 import EditAccount from "./EditAccount";
-import DeleteAccount from "./DeleteAccount";
+import ConfirmDelete from "../../common/ConfirmDelete";
 import ExportAccount from "./ExportAccount";
-import { AccountData } from "@/src/admin/types/account";
+import { AccountType } from "@/src/admin/types/account";
 import { Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 
 const FIELDS = [
@@ -20,7 +20,7 @@ const FIELDS = [
     { name: 'actions' },
 ];
 
-const ACCOUNTS: AccountData[] = [
+const ACCOUNTS: AccountType[] = [
     { 
         id: '1',
         avatar: '/assets/demo/neil-sims.png', 
@@ -54,10 +54,10 @@ const ACCOUNTS: AccountData[] = [
 ];
 
 export default function AccountList () {
-    const [accounts, setAccounts] = useState<AccountData[]>(ACCOUNTS);
+    const [accounts, setAccounts] = useState<AccountType[]>(ACCOUNTS);
 
     // Hàm xử lý lưu dữ liệu sau khi sửa
-    const handleSaveAccount = async (updatedAccount: AccountData) => {
+    const handleSaveAccount = async (updatedAccount: AccountType) => {
         // 1. Sau này gắn API thật tại đây:
         // await fetch(`/api/accounts/${updatedAccount.id}`, { method: 'PUT', body: JSON.stringify(updatedAccount) });
 
@@ -133,7 +133,7 @@ export default function AccountList () {
                                             <TableCell>
                                                 <div className="flex items-center gap-2">
                                                     <EditAccount account={account} onSave={handleSaveAccount} />
-                                                    <DeleteAccount account={account} onDelete={handleDeleteAccount} />
+                                                    <ConfirmDelete id={account.id} itemName={account.email} onDelete={handleDeleteAccount} />
                                                 </div>
                                             </TableCell>
                                         </TableRow>

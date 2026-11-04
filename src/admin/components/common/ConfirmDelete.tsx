@@ -3,14 +3,14 @@
 import { useState, useTransition } from "react";
 import { Spinner, Button, Modal, ModalHeader, ModalBody } from "flowbite-react";
 import { CircleAlert, Trash } from "lucide-react";
-import { AccountData } from "@/src/admin/types/account";
 
-interface DeleteAccountProps {
-    account: AccountData;
+interface ConfirmDeleteProps {
+    id: string;
+    itemName?: string;
     onDelete: (id: string) => Promise<void>;
 }
 
-export default function DeleteAccount ({ account, onDelete }: DeleteAccountProps) {
+export default function ConfirmDelete ({ id, itemName, onDelete }: ConfirmDeleteProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isPending, startTransition] = useTransition();
 
@@ -20,17 +20,17 @@ export default function DeleteAccount ({ account, onDelete }: DeleteAccountProps
     const handleDelete = () => {
         startTransition(async () => {
             try {
-                await onDelete(account.id);
+                await onDelete(id);
                 setIsOpen(false); // Đóng modal khi thành công
             } catch (error) {
-                console.error('Xóa tài khoản thất bại:', error);
+                console.error('Xóa trang thất bại:', error);
             }
         });
     };
 
     return (
         <>
-            <Button size="sm" color="red" onClick={handleOpen}>
+            <Button size="sm" color="red" outline onClick={handleOpen}>
                 <Trash className="w-4 h-4 mr-2" />
                 Delete
             </Button>
@@ -39,9 +39,9 @@ export default function DeleteAccount ({ account, onDelete }: DeleteAccountProps
                 <ModalHeader />
                 <ModalBody>
                     <div className="text-center">
-                        <CircleAlert className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                        <CircleAlert className="mx-auto mb-4 h-14 w-14 text-red-400 dark:text-gray-200" />
                         <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                        Are you sure you want to delete this product?
+                            Delete &quot;{itemName}&quot; ?
                         </h3>
                         <div className="flex justify-center gap-4">
                             <Button color="red" onClick={handleDelete}>
@@ -52,7 +52,7 @@ export default function DeleteAccount ({ account, onDelete }: DeleteAccountProps
                                         <span>Deleting...</span>
                                     </div>
                                 ) : (
-                                    'Yes, I am sure'
+                                    "Yes, I'm sure"
                                 )}
                             </Button>
                             <Button color="alternative" onClick={handleClose} disabled={isPending}>
