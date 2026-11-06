@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { TextInput } from "flowbite-react";
-import { LayoutDashboard, StickyNote, Users, UserShield, LayoutList, Newspaper, BadgeAlert, Search, Settings } from "lucide-react";
+import { LayoutDashboard, StickyNote, Users, LayoutList, Newspaper, BadgeAlert, Search, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface SidebarProps {
@@ -14,10 +14,9 @@ const MENU = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard},
     { name: 'Pages', href: '/admin/pages', icon: StickyNote},
     { name: 'Accounts', href: '/admin/accounts', icon: Users},
-    { name: 'Roles', href: '/admin/roles', icon: UserShield},
     { name: 'Categories', href: '/admin/categories', icon: LayoutList},
     { name: 'Posts', href: '/admin/posts', icon: Newspaper},
-    { name: 'Issues', href: '/admin/issues', icon: BadgeAlert},
+    { name: 'Incidents', href: '/admin/incidents', icon: BadgeAlert},
 ];
 
 export function Sidebar ({ isOpen, onClose }: SidebarProps) {
