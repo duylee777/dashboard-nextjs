@@ -1,13 +1,15 @@
 'use client';
 
-import Link from "next/link";
+import { useState } from "react";
 import Image from "next/image";
 import AdminPaginate from "./AdminPaginate";
 import FilterAccount from "./FilterAccount";
 import CreateAccount from "./CreateAccount";
 import EditAccount from "./EditAccount";
-import DeleteAccount from "./DeleteAccount";
-import ExportAccount from "./ExportAccount"
+import ConfirmDelete from "../../common/ConfirmDelete";
+import ExportAccount from "./ExportAccount";
+import { AccountType } from "@/src/admin/types/account";
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 
 const FIELDS = [
     { name: 'name' },
@@ -18,7 +20,7 @@ const FIELDS = [
     { name: 'actions' },
 ];
 
-const ACCOUNTS = [
+const ACCOUNTS: AccountType[] = [
     { 
         id: '1',
         avatar: '/assets/demo/neil-sims.png', 
@@ -52,6 +54,25 @@ const ACCOUNTS = [
 ];
 
 export default function AccountList () {
+    const [accounts, setAccounts] = useState<AccountType[]>(ACCOUNTS);
+
+    // Hàm xử lý lưu dữ liệu sau khi sửa
+    const handleSaveAccount = async (updatedAccount: AccountType) => {
+        // 1. Sau này gắn API thật tại đây:
+        // await fetch(`/api/accounts/${updatedAccount.id}`, { method: 'PUT', body: JSON.stringify(updatedAccount) });
+
+        // 2. Cập nhật state local để hiển thị ngay thay đổi lên giao diện
+        setAccounts((prev) =>
+            prev.map((acc) => (acc.id === updatedAccount.id ? updatedAccount : acc))
+        );
+    };
+
+    // Xử lý Xóa
+    const handleDeleteAccount = async (id: string) => {
+        // Gọi API DELETE thực tế tại đây nếu có
+        setAccounts((prev) => prev.filter((acc) => acc.id !== id));
+    };
+
     return (
     <>
         {/* filter + create + export */}
@@ -67,66 +88,59 @@ export default function AccountList () {
             </div>
         </div>
 
-        {/* account list*/}
         <div className="flex flex-col">
             <div className="overflow-x-auto">
                 <div className="inline-block min-w-full align-middle">
                     <div className="overflow-hidden shadow">
-                        <table className="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
-                            <thead className="bg-gray-100 dark:bg-gray-700">
-                                <tr>
-                                    <th scope="col" className="p-4">
-                                        <div className="flex items-center">
-                                            <input id="checkbox-all" aria-describedby="checkbox-1" type="checkbox" className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" />
-                                            <label htmlFor="checkbox-all" className="sr-only">checkbox</label>
-                                        </div>
-                                    </th>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableHeadCell className="p-4">
+                                        <Checkbox />
+                                    </TableHeadCell>
                                     {FIELDS.map((field) => {
                                         return (
-                                            <th key={field.name} scope="col" className="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                {field.name}
-                                            </th>
+                                            <TableHeadCell key={field.name}>{field.name}</TableHeadCell>
                                         );
                                     })}
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                {ACCOUNTS.map ((account) => {
+                                </TableRow>
+                            </TableHead>
+                            <TableBody className="divide-y">
+                                {ACCOUNTS.map((account) => {
                                     return (
-                                        <tr key={account.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                            <td className="w-4 p-4">
-                                                <div className="flex items-center">
-                                                    <input id="checkbox-1" aria-describedby="checkbox-1" type="checkbox" className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label htmlFor="checkbox-1" className="sr-only">checkbox</label>
+                                        <TableRow key={account.id}>
+                                            <TableCell className="p-4">
+                                                <Checkbox />
+                                            </TableCell>
+                                            <TableCell className="whitespace-nowrap space-x-2">
+                                                <div className="inline-block">
+                                                    <Image src={account.avatar} alt={account.name} className="w-10 h-10 rounded-full object-cover" width={40} height={40}/>
                                                 </div>
-                                            </td>
-                                            <td className="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
-                                                <Image src={account.avatar} alt={account.name} className="w-10 h-10 rounded-full object-cover" width={40} height={40}/>
-                                                <div className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                                <div className="inline-block">
                                                     <div className="text-base font-semibold text-gray-900 dark:text-white">{account.name}</div>
-                                                    <div className="text-sm font-normal text-gray-500 dark:text-gray-400">{account.email}</div>
+                                                    <div className="">{account.email}</div>
                                                 </div>
-                                            </td>
-                                            <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400">{account.biography}</td>
-                                            <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{account.position}</td>
-                                            <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">{account.country}</td>
-                                            <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                                            </TableCell>
+                                            <TableCell className="max-w-sm xl:max-w-xs truncate">{account.biography}</TableCell>
+                                            <TableCell className="whitespace-nowrap">{account.position}</TableCell>
+                                            <TableCell className="whitespace-nowrap">{account.country}</TableCell>
+                                            <TableCell className="whitespace-nowrap">
                                                 <div className="flex items-center">
                                                     <div className={`h-2.5 w-2.5 rounded-full ${account.status == 'active' ? 'bg-green-400' : 'bg-red-400'} mr-2`}></div>  
                                                     <span className="capitalize">{account.status}</span>
                                                 </div>
-                                            </td>
-                                            <td className="">
-                                                <div className="p-4 items-center flex gap-2 justify-end">
-                                                    <EditAccount />
-                                                    <DeleteAccount />
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-2">
+                                                    <EditAccount account={account} onSave={handleSaveAccount} />
+                                                    <ConfirmDelete id={account.id} itemName={account.email} onDelete={handleDeleteAccount} />
                                                 </div>
-                                            </td>
-                                        </tr>
+                                            </TableCell>
+                                        </TableRow>
                                     );
                                 })}
-                            </tbody>
-                        </table>
+                            </TableBody>
+                        </Table>
                     </div>
                 </div>
             </div>
