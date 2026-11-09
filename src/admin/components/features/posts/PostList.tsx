@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from "react";
-
+import Link from "next/link";
+import FilterPost from "./FilterPost";
 import ConfirmDelete from "../../common/ConfirmDelete";
 import { PostType } from "@/src/admin/types/post";
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Plus } from "lucide-react";
 
 const FIELDS = [
     'title', 
@@ -75,9 +77,13 @@ export default function PostList () {
             <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <div className="w-full mb-1">
                     <div className="sm:flex">
-                        {/* <FilterRole /> */}
+                        <FilterPost />
                         <div className="flex items-center ml-auto space-x-2 sm:space-x-3">
                             {/* <Createpost /> */}
+                            <Button as={Link} href="/admin/posts/create">
+                                <Plus className="w-5 h-5 mr-2 -ml-1" />
+                                Add post
+                            </Button>
                         </div>
                     </div>
                 </div>
