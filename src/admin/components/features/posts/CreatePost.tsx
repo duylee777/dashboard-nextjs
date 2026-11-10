@@ -1,11 +1,25 @@
 'use client';
 
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import thumbnail from '@/public/assets/demo/thumbnail.jpg';
 import { TabItem, Tabs, Button, Select, Checkbox, Label, FileInput, HelperText, TextInput, Textarea } from "flowbite-react";
 import { CalendarDays, Newspaper, LayoutList } from "lucide-react";
 
+// Dynamic import vô hiệu hóa SSR chuẩn kiến trúc Next.js
+const TinyMCEEditor = dynamic(() => import('@/src/admin/components/common/TinyMCEEditor'), {
+    ssr: false,
+    loading: () => (
+        <div className="h-125 w-full bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg flex items-center justify-center text-gray-400">
+            Đang tải trình soạn thảo...
+        </div>
+    ),
+}); 
+
 export default function CreatePost () {
+    const [content, setContent] = useState<string>('<p>Nội dung ban đầu...</p>');
+
     return (
         <>
             <div className="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -70,6 +84,10 @@ export default function CreatePost () {
                                     <div className="space-y-2">
                                         <Label className="block" htmlFor="description">Description</Label>
                                         <Textarea placeholder="Input description ..." required rows={4} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="block" htmlFor="content">Content</Label>
+                                        <TinyMCEEditor value={content} onChange={setContent} />
                                     </div>
                                 </div>
                             </TabItem>

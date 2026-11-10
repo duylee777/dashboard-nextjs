@@ -6,7 +6,7 @@ import FilterPost from "./FilterPost";
 import ConfirmDelete from "../../common/ConfirmDelete";
 import { PostType } from "@/src/admin/types/post";
 import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
-import { Plus } from "lucide-react";
+import { Plus, SquarePen } from "lucide-react";
 
 const FIELDS = [
     'title', 
@@ -126,6 +126,10 @@ export default function PostList () {
                                                 <TableCell>
                                                     <div className="flex items-center gap-2">
                                                         {/* <Editpost post={post} onSave={handleSavepost} /> */}
+                                                        <Button size="sm" color="yellow" outline as={Link} href="#">
+                                                            <SquarePen className="w-4 h-4 mr-2" />
+                                                            Edit
+                                                        </Button>
                                                         <ConfirmDelete id={post.id} itemName={post.title} onDelete={handleDeletePost} />
                                                     </div>
                                                 </TableCell>

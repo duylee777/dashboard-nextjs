@@ -6,15 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tinymce": "cp -r node_modules/tinymce public/"
   },
   "dependencies": {
+    "@tinymce/tinymce-react": "^6.3.1",
     "flag-icons": "^7.6.0",
     "flowbite-react": "^0.12.17",
     "lucide-react": "^1.63.0",
     "next": "16.4.3",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "tinymce": "^8.10.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
