@@ -1,5 +1,9 @@
-export default function DashboardPage () {
+import PageTitle from "@/src/admin/components/common/PageTitle";
+
+export default function IncidentManager () {
     return (
-        <div className="">dashboard</div>
+        <>
+            <PageTitle title="Bảng điều khiển" />
+        </>
     );
 }
