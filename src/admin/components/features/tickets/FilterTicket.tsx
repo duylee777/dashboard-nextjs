@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { TextInput } from "flowbite-react";
-import { Settings, Trash } from "lucide-react";
+import { Settings } from "lucide-react";
 
 export default function FilterTicket () {
     return (
@@ -16,9 +16,6 @@ export default function FilterTicket () {
             <div className="flex items-center pl-0 mt-3 space-x-1 sm:pl-2 sm:mt-0">
                 <Link href="#" className="p-1 text-gray-500 rounded hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                     <Settings className="w-6 h-6" />
-                </Link>
-                <Link href="#" className="p-1 text-gray-500 rounded hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                    <Trash className="w-6 h-6" />
                 </Link>
             </div>
         </div>
